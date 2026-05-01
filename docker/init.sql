@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS lara_test;
+CREATE USER IF NOT EXISTS 'lara_test'@'%' IDENTIFIED BY 'secret';
+GRANT ALL PRIVILEGES ON lara_test.* TO 'lara_test'@'%';
+FLUSH PRIVILEGES;
