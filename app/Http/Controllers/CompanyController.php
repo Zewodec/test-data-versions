@@ -11,7 +11,6 @@ use App\Services\CompanyService;
 
 class CompanyController extends Controller
 {
-
     public function __construct(
         protected CompanyService $companyService,
     ) {}
@@ -30,6 +29,7 @@ class CompanyController extends Controller
             ]);
         } else {
             $result = $this->companyService->updateCompany($company, $data);
+
             return new VersioningResultResponse($company);
         }
     }

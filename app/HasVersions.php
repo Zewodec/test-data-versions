@@ -10,7 +10,7 @@ trait HasVersions
 {
     public static function bootHasVersions(): void
     {
-        static::created(fn($model) => $model->snapshot());
+        static::created(fn ($model) => $model->snapshot());
     }
 
     public function versions(): MorphMany

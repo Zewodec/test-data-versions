@@ -7,8 +7,8 @@ use App\Enum\DataVersioningStatus;
 use App\Models\Company;
 use App\Repositories\CompanyRepository;
 
-class CompanyService {
-
+class CompanyService
+{
     public function __construct(
         protected CompanyRepository $companyRepository,
     ) {}
@@ -44,6 +44,4 @@ class CompanyService {
             'version' => $company->version,
         ];
     }
-
-
 }

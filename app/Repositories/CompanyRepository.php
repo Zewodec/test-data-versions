@@ -5,7 +5,8 @@ namespace App\Repositories;
 use App\DTO\StoreCompanyDto;
 use App\Models\Company;
 
-class CompanyRepository {
+class CompanyRepository
+{
     public function findOrCreateCompany(
         StoreCompanyDto $storeCompanyDto
     ): Company {
@@ -17,5 +18,4 @@ class CompanyRepository {
             ]
         );
     }
-
 }
