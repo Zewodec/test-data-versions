@@ -15,9 +15,9 @@ class VersioningResultResponse extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'status' => $this->status,
-            'company_id' => $this->company_id,
-            'version' => $this->version,
+            'status' => $this->resource['status'],
+            'company_id' => $this->resource['company_id'],
+            'version' => $this->resource['version'],
         ];
     }
 }

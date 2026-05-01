@@ -21,9 +21,9 @@ class CompanyVersionsResource extends JsonResource
             'version' => $this->version,
             'versions' => $this->versions->map(function ($version) {
                 return [
-                    'version' => $version->version,
-                    'name' => $version->name,
-                    'address' => $version->address,
+                    'version' => $version->version_number,
+                    'name' => $version->data['name'],
+                    'address' => $version->data['address'],
                     'created_at' => $version->created_at,
                 ];
             }),
