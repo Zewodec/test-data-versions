@@ -1,59 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Test Data Versions
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel API with polymorphic data versioning.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## English
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Run
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+docker compose up -d
+docker exec app php artisan migrate
+docker exec app php artisan db:seed
+```
 
-## Learning Laravel
+Server starts at `http://localhost:8000`.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### API
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Method | URL | Description |
+|--------|-----|-------------|
+| `POST` | `/api/companies` | Create or update company |
+| `GET` | `/api/companies/{edrpou}/versions` | Get company version history |
 
-## Laravel Sponsors
+**POST `/api/companies` body:**
+```json
+{
+    "name": "Company Name",
+    "edrpou": "12345678",
+    "address": "123 Main St"
+}
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Migrations
 
-### Premium Partners
+Located in `database/migrations/`:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| File | Description |
+|------|-------------|
+| `2026_05_01_121602_create_companies_table.php` | Companies table |
+| `2026_05_01_130000_create_versions_table.php` | Versions table (polymorphic) |
+| `2026_05_01_122535_create_personal_access_tokens_table.php` | Sanctum tokens |
 
-## Contributing
+### Versioning
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Versioning is implemented via the `HasVersions` trait and a shared polymorphic `versions` table (not `company_versions`). This was done so versioning would work with **any model** — not only companies. Any future route or model can use the same mechanism by adding `use HasVersions` to the model.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Українська
 
-## Security Vulnerabilities
+### Запуск
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+docker compose up -d
+docker exec app php artisan migrate
+docker exec app php artisan db:seed
+```
 
-## License
+Сервер доступний за адресою `http://localhost:8000`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### API
+
+| Метод | URL | Опис |
+|-------|-----|------|
+| `POST` | `/api/companies` | Створити або оновити компанію |
+| `GET` | `/api/companies/{edrpou}/versions` | Отримати історію версій компанії |
+
+**POST `/api/companies` тіло запиту:**
+```json
+{
+    "name": "Назва компанії",
+    "edrpou": "12345678",
+    "address": "вул. Хрещатик, 1"
+}
+```
+
+### Міграції
+
+Знаходяться в `database/migrations/`:
+
+| Файл | Опис |
+|------|------|
+| `2026_05_01_121602_create_companies_table.php` | Таблиця компаній |
+| `2026_05_01_130000_create_versions_table.php` | Таблиця версій (поліморфна) |
+| `2026_05_01_122535_create_personal_access_tokens_table.php` | Токени Sanctum |
+
+### Версійність
+
+Версійність реалізована через трейт `HasVersions` та спільну поліморфну таблицю `versions` (не `company_versions`). Це було зроблено з метою забезпечити версійність для роботи з будь-якою моделлю — не лише з компаніями. Будь-який майбутній маршрут або модель може використовувати той самий механізм, додавши `use HasVersions` до моделі.
