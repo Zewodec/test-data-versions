@@ -10,10 +10,10 @@ class Company extends Model
     use HasFactory;
 
     protected $fillable = [
-            'name',
-            'edrpou',
-            'address',
-        ];
+        'name',
+        'edrpou',
+        'address',
+    ];
 
     protected function casts(): array
     {
