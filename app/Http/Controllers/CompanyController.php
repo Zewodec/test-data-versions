@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\StoreCompanyDto;
 use App\Enum\DataVersioningStatus;
 use App\Http\Requests\CompanyRequest;
+use App\Http\Resources\CompanyVersionsResource;
 use App\Http\Resources\VersioningResultResponse;
 use App\Models\Company;
 use App\Services\CompanyService;
@@ -36,6 +37,8 @@ class CompanyController extends Controller
 
     public function showVersions(Company $company)
     {
-        return new VersioningResultResponse($company);
+        $company->load('versions');
+
+        return new CompanyVersionsResource($company);
     }
 }
