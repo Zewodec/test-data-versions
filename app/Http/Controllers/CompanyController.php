@@ -31,7 +31,7 @@ class CompanyController extends Controller
         } else {
             $result = $this->companyService->updateCompany($company, $data);
 
-            return new VersioningResultResponse($company);
+            return new VersioningResultResponse($result);
         }
     }
 
