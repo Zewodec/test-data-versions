@@ -31,9 +31,6 @@ RUN if [ -f package-lock.json ]; then npm ci; elif [ -f package.json ]; then npm
 
 COPY --chown=app:app . .
 
-RUN composer dump-autoload --optimize \
-    && if [ -f package.json ]; then npm run build; fi
-
 USER app
 
 EXPOSE 8000
