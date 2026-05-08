@@ -10,7 +10,7 @@ class CompanyRepository
     public function findOrCreateCompany(
         StoreCompanyDto $storeCompanyDto
     ): Company {
-        return Company::firstOrCreate(
+        return Company::lockForUpdate()->firstOrCreate(
             ['edrpou' => $storeCompanyDto->edrpou],
             [
                 'name' => $storeCompanyDto->name,

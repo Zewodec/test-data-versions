@@ -9,6 +9,8 @@ use App\Http\Resources\CompanyVersionsResource;
 use App\Http\Resources\VersioningResultResponse;
 use App\Models\Company;
 use App\Services\CompanyService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CompanyController extends Controller
 {
@@ -20,18 +22,28 @@ class CompanyController extends Controller
     {
         $data = StoreCompanyDto::from($request->validated());
 
-        $company = $this->companyService->findOrCreateCompany($data);
+        try {
+            DB::transaction(function () use ($data) {
+                $company = $this->companyService->findOrCreateCompany($data);
 
-        if ($company->wasRecentlyCreated) {
-            return new VersioningResultResponse([
-                'status' => DataVersioningStatus::CREATED->value,
-                'company_id' => $company->id,
-                'version' => $company->version,
-            ]);
-        } else {
-            $result = $this->companyService->updateCompany($company, $data);
+                if ($company->wasRecentlyCreated) {
+                    return new VersioningResultResponse([
+                        'status'     => DataVersioningStatus::CREATED->value,
+                        'company_id' => $company->id,
+                        'version'    => $company->version,
+                    ]);
+                } else {
+                    $result = $this->companyService->updateCompany($company, $data);
 
-            return new VersioningResultResponse($result);
+                    return new VersioningResultResponse($result);
+                }
+            });
+        } catch (\Throwable $e) {
+            Log::error('Error storing company: ' . $e->getMessage());
+            // send error message with code
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 
