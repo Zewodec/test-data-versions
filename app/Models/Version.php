@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Version extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'versionable_type',
         'versionable_id',
