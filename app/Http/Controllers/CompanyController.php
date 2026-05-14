@@ -23,7 +23,7 @@ class CompanyController extends Controller
         $data = StoreCompanyDto::from($request->validated());
 
         try {
-            DB::transaction(function () use ($data) {
+            return DB::transaction(function () use ($data) {
                 $company = $this->companyService->findOrCreateCompany($data);
 
                 if ($company->wasRecentlyCreated) {
@@ -42,7 +42,7 @@ class CompanyController extends Controller
             Log::error('Error storing company: ' . $e->getMessage());
             // send error message with code
             return response()->json([
-                'message' => $e->getMessage(),
+                'message' => 'An error occurred while processing your request.',
             ], 500);
         }
     }

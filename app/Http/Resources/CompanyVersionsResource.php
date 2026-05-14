@@ -26,7 +26,7 @@ class CompanyVersionsResource extends JsonResource
                     'address' => $version->data['address'],
                     'created_at' => $version->created_at,
                 ];
-            })->sortByDesc('created_at')->values(),
+            })->sortByDesc('version')->values(),
         ];
     }
 }
