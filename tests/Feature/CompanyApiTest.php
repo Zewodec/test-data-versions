@@ -225,10 +225,10 @@ class CompanyApiTest extends TestCase
         $versions = $this->getJson("/api/companies/{$company->edrpou}/versions")
             ->json('data.versions');
 
-        $this->assertEquals(1, $versions[0]['version']);
-        $this->assertEquals('Original Name', $versions[0]['name']);
-        $this->assertEquals(2, $versions[1]['version']);
-        $this->assertEquals('Changed Name', $versions[1]['name']);
+        $this->assertEquals(2, $versions[0]['version']);
+        $this->assertEquals('Changed Name', $versions[0]['name']);
+        $this->assertEquals(1, $versions[1]['version']);
+        $this->assertEquals('Original Name', $versions[1]['name']);
     }
 
     public function test_returns_404_for_nonexistent_company(): void
