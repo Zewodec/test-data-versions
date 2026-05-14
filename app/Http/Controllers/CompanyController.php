@@ -39,7 +39,7 @@ class CompanyController extends Controller
                 }
             });
         } catch (\Throwable $e) {
-            Log::error('Error storing company: ' . $e->getMessage());
+            Log::error('Error storing company', ['exception' => $e]);
             // send error message with code
             return response()->json([
                 'message' => 'An error occurred while processing your request.',
@@ -49,7 +49,7 @@ class CompanyController extends Controller
 
     public function showVersions(Company $company)
     {
-        $company->load('versions');
+        $company->load(['versions' => fn ($q) => $q->orderByDesc('version_number')]);
 
         return new CompanyVersionsResource($company);
     }
